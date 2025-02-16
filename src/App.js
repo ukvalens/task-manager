@@ -3,6 +3,7 @@ import TaskList from './components/TaskList';
 import TaskCard from './components/TaskCard';
 import TaskForm from './components/TaskForm';
 import TaskItem from './components/TaskItem';
+import FilterSort from './components/FilterSort';
   return (
     <div className="App">
       <header className="bg-blue-500 text-white p-4">
@@ -13,6 +14,6 @@ import TaskItem from './components/TaskItem';
       </main>
     </div>
   );
-};
+;
 
 export default App;
