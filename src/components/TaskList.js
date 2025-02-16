@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import TaskItem from './TaskItem';
 import TaskForm from './TaskForm';
+import FilterSort from './FilterSort';
 import axios from 'axios';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState('');
+  const [sort, setSort] = useState('');
   
   useEffect(() => {
     axios.get('/api/tasks')
@@ -17,23 +19,25 @@ const TaskList = () => {
     filter === '' || task.priority === filter || task.status === filter
   );
 
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+    if (sort === 'Priority') {
+      const priorityOrder = { 'High': 1, 'Medium': 2, 'Low': 3 };
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    } else if (sort === 'Status') {
+      const statusOrder = { 'Completed': 1, 'Pending': 2 };
+      return statusOrder[a.status] - statusOrder[b.status];
+    } else {
+      return 0;
+    }
+  });
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Task Manager</h1>
-      <div className="mb-4">
-        <label className="mr-2">Filter by:</label>
-        <select onChange={e => setFilter(e.target.value)} className="border p-1 rounded">
-          <option value="">All</option>
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
-          <option value="Completed">Completed</option>
-          <option value="Pending">Pending</option>
-        </select>
-      </div>
+      <FilterSort setFilter={setFilter} setSort={setSort} />
       <TaskForm setTasks={setTasks} />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredTasks.map(task => (
+        {sortedTasks.map(task => (
           <TaskItem key={task._id} task={task} setTasks={setTasks} />
         ))}
       </div>
