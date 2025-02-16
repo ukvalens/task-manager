@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TaskCard from './TaskCard';
+import TaskItem from './TaskItem';
 import TaskForm from './TaskForm';
 import axios from 'axios';
 
@@ -34,7 +34,7 @@ const TaskList = () => {
       <TaskForm setTasks={setTasks} />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {filteredTasks.map(task => (
-          <TaskCard key={task._id} task={task} setTasks={setTasks} />
+          <TaskItem key={task._id} task={task} setTasks={setTasks} />
         ))}
       </div>
     </div>
